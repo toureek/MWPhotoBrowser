@@ -424,7 +424,7 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     }
     
     if (![self.navigationController.viewControllers containsObject:self]) {
-        [self.navigationController setNavigationBarHidden:YES animated:animated];
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
     }
     
 	// Super
