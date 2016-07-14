@@ -372,7 +372,8 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     
     // Layout
     [self.view setNeedsLayout];
-
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -420,6 +421,10 @@ static void * MWVideoPlayerObservation = &MWVideoPlayerObservation;
     // Status bar
     if (!_leaveStatusBarAlone && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [[UIApplication sharedApplication] setStatusBarStyle:_previousStatusBarStyle animated:animated];
+    }
+    
+    if (![self.navigationController.viewControllers containsObject:self]) {
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
     }
     
 	// Super
