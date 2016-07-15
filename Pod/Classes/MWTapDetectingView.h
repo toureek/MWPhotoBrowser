@@ -24,4 +24,7 @@
 - (void)view:(UIView *)view doubleTapDetected:(UITouch *)touch;
 - (void)view:(UIView *)view tripleTapDetected:(UITouch *)touch;
 
+#pragma mark - Appending new gesture
+- (void)imageView:(UIImageView *)imageView dragAndDropDetected:(UIPanGestureRecognizer *)panGesture;
+
 @end

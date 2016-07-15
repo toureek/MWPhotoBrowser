@@ -211,9 +211,9 @@
 }
 
 - (void)showLoadingIndicator {
-    self.zoomScale = 0;
-    self.minimumZoomScale = 0;
-    self.maximumZoomScale = 0;
+    self.zoomScale = 0.1;
+    self.minimumZoomScale = 0.1;
+    self.maximumZoomScale = 0.1;
     _loadingIndicator.progress = 0;
     _loadingIndicator.hidden = NO;
     [self hideImageFailure];
@@ -419,6 +419,56 @@
 - (void)imageView:(UIImageView *)imageView doubleTapDetected:(UITouch *)touch {
     [self handleDoubleTap:[touch locationInView:imageView]];
 }
+
+#pragma mark - Appending new for Image Drag and Drop
+
+- (void)imageView:(UIImageView *)imageView dragAndDropDetected:(UIPanGestureRecognizer *)panGesture {
+    [self handleDragAndDropPanGesture:panGesture];
+}
+
+- (void)handleDragAndDropPanGesture:(UIPanGestureRecognizer *)panGesture {
+    CGPoint point = [panGesture translationInView:self];
+    NSLog(@"%f,%f",point.x,point.y);  // 横坐标上、纵坐标上拖动了多少像素
+    CGFloat kWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat kHeight = [UIScreen mainScreen].bounds.size.height;
+    
+    CGFloat centerX = panGesture.view.center.x + point.x;
+    CGFloat centerY = panGesture.view.center.y + point.y;
+    
+    CGFloat viewHalfH = panGesture.view.frame.size.height/2;
+    CGFloat viewhalfW = panGesture.view.frame.size.width/2;
+    
+    //确定特殊的centerY
+    if (centerY - viewHalfH < 0 ) {
+        centerY = viewHalfH;
+    }
+    if (centerY + viewHalfH > kHeight ) {
+        centerY = kHeight - viewHalfH;
+    }
+    
+    //确定特殊的centerX
+    if (centerX - viewhalfW < 0){
+        centerX = viewhalfW;
+    }
+    if (centerX + viewhalfW > kWidth){
+        centerX = kWidth - viewhalfW;
+    }
+    
+    panGesture.view.center = CGPointMake(centerX, centerY);
+    [panGesture setTranslation:CGPointMake(0, 0) inView:self];
+    
+    if (panGesture.state == UIGestureRecognizerStateEnded) {
+        double delayInSeconds = 0.15f;
+        double animationInSeconds = 0.35f;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [UIView animateWithDuration:animationInSeconds animations:^{
+                panGesture.view.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
+            }];
+        });
+    }
+}
+
 
 // Background View
 - (void)view:(UIView *)view singleTapDetected:(UITouch *)touch {

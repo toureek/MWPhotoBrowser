@@ -13,6 +13,7 @@
 - (id)initWithFrame:(CGRect)frame {
 	if ((self = [super initWithFrame:frame])) {
 		self.userInteractionEnabled = YES;
+        [self addNewPanGesture];
 	}
 	return self;
 }
@@ -20,6 +21,7 @@
 - (id)initWithImage:(UIImage *)image {
 	if ((self = [super initWithImage:image])) {
 		self.userInteractionEnabled = YES;
+        [self addNewPanGesture];
 	}
 	return self;
 }
@@ -27,6 +29,7 @@
 - (id)initWithImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage {
 	if ((self = [super initWithImage:image highlightedImage:highlightedImage])) {
 		self.userInteractionEnabled = YES;
+        [self addNewPanGesture];
 	}
 	return self;
 }
@@ -51,18 +54,32 @@
 }
 
 - (void)handleSingleTap:(UITouch *)touch {
-	if ([_tapDelegate respondsToSelector:@selector(imageView:singleTapDetected:)])
+	if (_tapDelegate && [_tapDelegate respondsToSelector:@selector(imageView:singleTapDetected:)])
 		[_tapDelegate imageView:self singleTapDetected:touch];
 }
 
 - (void)handleDoubleTap:(UITouch *)touch {
-	if ([_tapDelegate respondsToSelector:@selector(imageView:doubleTapDetected:)])
+	if (_tapDelegate && [_tapDelegate respondsToSelector:@selector(imageView:doubleTapDetected:)])
 		[_tapDelegate imageView:self doubleTapDetected:touch];
 }
 
 - (void)handleTripleTap:(UITouch *)touch {
-	if ([_tapDelegate respondsToSelector:@selector(imageView:tripleTapDetected:)])
+	if (_tapDelegate && [_tapDelegate respondsToSelector:@selector(imageView:tripleTapDetected:)])
 		[_tapDelegate imageView:self tripleTapDetected:touch];
+}
+
+#pragma mark - Appending new gesture of PanGesture
+
+- (void)addNewPanGesture {
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self
+                                                                                action:@selector(handlePanGesture:)];
+    [self addGestureRecognizer:panGesture];
+}
+
+- (void)handlePanGesture:(UIPanGestureRecognizer *)panGesture {
+    if (_tapDelegate && [_tapDelegate respondsToSelector:@selector(imageView:dragAndDropDetected:)]) {
+        [_tapDelegate imageView:self dragAndDropDetected:panGesture];
+    }
 }
 
 @end
