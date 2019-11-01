@@ -409,7 +409,6 @@
 	
 	// Delay controls
 	[_photoBrowser hideControlsAfterDelay];
-	
 }
 
 // Image View
@@ -421,7 +420,6 @@
 }
 
 #pragma mark - Appending new for Image Drag and Drop
-
 - (void)imageView:(UIImageView *)imageView dragAndDropDetected:(UIPanGestureRecognizer *)panGesture {
     [self handleDragAndDropPanGesture:panGesture];
 }

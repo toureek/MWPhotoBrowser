@@ -78,7 +78,8 @@
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)panGesture {
     if (_tapDelegate && [_tapDelegate respondsToSelector:@selector(imageView:dragAndDropDetected:)]) {
-        [_tapDelegate imageView:self dragAndDropDetected:panGesture];
+//        [_tapDelegate imageView:self dragAndDropDetected:panGesture];
+//        _tapDelegate imageView:self dragAndDropDetected:<#(UITouch *)#>
     }
 }
 

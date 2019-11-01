@@ -8,7 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol MWTapDetectingImageViewDelegate;
+@protocol MWTapDetectingImageViewDelegate <NSObject>
+@optional
+- (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch;
+- (void)imageView:(UIImageView *)imageView doubleTapDetected:(UITouch *)touch;
+- (void)imageView:(UIImageView *)imageView tripleTapDetected:(UITouch *)touch;
+#pragma mark - Drop&Drag
+//- (void)imageView:(UIImageView *)imageView dragAndDropDetected:(UITouch *)touch;
+@end
 
 @interface MWTapDetectingImageView : UIImageView {}
 
@@ -16,12 +23,3 @@
 
 @end
 
-@protocol MWTapDetectingImageViewDelegate <NSObject>
-
-@optional
-
-- (void)imageView:(UIImageView *)imageView singleTapDetected:(UITouch *)touch;
-- (void)imageView:(UIImageView *)imageView doubleTapDetected:(UITouch *)touch;
-- (void)imageView:(UIImageView *)imageView tripleTapDetected:(UITouch *)touch;
-
-@end
